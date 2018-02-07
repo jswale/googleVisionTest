@@ -67,4 +67,10 @@ function responseJson(response, json) {
     response.send(JSON.stringify(json, null, 2));
 }
 
-module.exports = {normalizePort, toInt, responseError, responseSuccess};
+
+function generateColor() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+}
+
+
+module.exports = {normalizePort, toInt, responseError, responseSuccess, generateColor};

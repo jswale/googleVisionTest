@@ -41,6 +41,10 @@ class Manager {
         });
     }
 
+    suggestByColor(product, limit) {
+        return [];
+    }
+
 }
 
 module.exports = new Manager();

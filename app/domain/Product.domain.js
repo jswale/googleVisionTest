@@ -1,5 +1,7 @@
 "use strict";
 
+const utils = require('../helpers/utils');
+
 class Product {
     constructor(id, title, gender, composition, sleeve, photo, url) {
         this.id = id;
@@ -10,6 +12,8 @@ class Product {
         this.photo = photo;
         this.url = url;
         this.color = null;
+        // TODO should by remove after debug
+        this.color = utils.generateColor();
     }
 
     toString() {
