@@ -2,6 +2,11 @@
   "webserver": {
     "port": "9090"
   },
+  "persistance" : {
+    "product" : {
+      "file" : "./data/products.data.json"
+    }
+  },
   "credentials": {
     "googleCloud": ""
   }

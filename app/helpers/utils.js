@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 /**
  * Normalize a port into a number, string, or false.
  *
@@ -77,5 +80,14 @@ function generateColor() {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 }
 
+function ensureDirectoryExistence(filePath) {
+    var dirname = path.dirname(filePath);
+    if (fs.existsSync(dirname)) {
+        return true;
+    }
+    ensureDirectoryExistence(dirname);
+    fs.mkdirSync(dirname);
+}
 
-module.exports = {normalizePort, toInt, responseError, responseSuccess, generateColor};
+
+module.exports = {normalizePort, toInt, rgbToHexa, responseError, responseSuccess, generateColor, ensureDirectoryExistence};

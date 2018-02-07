@@ -49,7 +49,7 @@ function productSuggestByColor(request, response, next) {
 
     let products = productManager.suggestByColor(product, limit);
 
-    utils.responseSuccess(response, products);
+    utils.responseSuccess(response, {product: product, suggestions: products});
 }
 
 router.get('/product/:id', productDetail);

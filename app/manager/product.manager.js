@@ -1,7 +1,9 @@
 const fs = require('fs');
 const fcsv = require('fast-csv');
 const gcVision = require('@google-cloud/vision');
+const colourProximity = require('colour-proximity');
 const config = require('../helpers/config');
+const utils = require('../helpers/utils');
 const logger = require('../helpers/logger');
 const Product = require('../domain/Product.domain');
 const storage = require('../storage/product.storage');
@@ -74,7 +76,7 @@ class Manager {
                 try {
                     score = colourProximity.proximity(product.color, other.color);
                 } catch (ex) {
-                    logger.warn(`Unable to perform proximity beetwen ${product} and ${other}`);
+                    logger.warn(`Unable to perform proximity beetwen ${product.id} and ${other.id}`);
                     return false;
                 }
 
@@ -88,15 +90,15 @@ class Manager {
                 }
 
                 if (addEntry) {
-                    products.push({p: other, s: score});
+                    products.push({product: other, score: score});
                     // We need to sort the products by their scores
-                    products.sort((a, b) => a.s - b.s);
+                    products.sort((a, b) => a.score - b.score);
                     // Retreive the new best score
                     best = products[products.length - 1];
                 }
             });
         }
-        return products.map(entry => entry.p.id);
+        return products;
     }
 
     getGCVClient() {
@@ -130,7 +132,7 @@ class Manager {
     }
 
     importColor(product) {
-        logger.debug(`Updating color for ${product} with image http:${product.photo}`);
+        logger.debug(`Updating color for ${product.toString()} with image http:${product.photo}`);
         return new Promise((resolve, reject) => {
             try {
                 let client = this.getGCVClient();
@@ -146,7 +148,7 @@ class Manager {
                             return a.score - b.score;
                         });
                         let mainColor = colors[colors.length - 1];
-                        thi.updateColor(product, mainColor.color);
+                        this.updateColor(product, mainColor.color);
                         resolve();
                     })
                     .catch(error => {
