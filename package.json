@@ -4,10 +4,14 @@
   "private": true,
   "main": "./bin/www",
   "scripts": {
+    "build": "apidoc -i app/ -o www/doc",
     "start": "node ./bin/www"
   },
   "engines": {
     "node": ">=8"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.6"
   },
   "dependencies": {
     "@google-cloud/vision": "^0.15.0",

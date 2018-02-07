@@ -57,7 +57,7 @@ function responseError(response, status, reason) {
  * @param data
  */
 function responseSuccess(response, data) {
-    responseJson(response, {data: data});
+    responseJson(response, data);
 }
 
 /**

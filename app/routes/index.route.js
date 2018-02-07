@@ -9,7 +9,7 @@ var router = express.Router();
  * @param next
  */
 function index(request, response, next) {
-    response.send(`Server is online`);
+    response.send(`Please refer to documentation at http://${request.headers.host}/doc`);
 }
 
 router.get('/', index);

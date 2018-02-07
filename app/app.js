@@ -57,6 +57,7 @@ class Server {
         this.app.use('/', require('./routes/index.route'));
         this.app.use('/admin', require('./routes/admin.route'));
         this.app.use('/api', require('./routes/api.route'));
+        this.app.use('/doc', express.static(__dirname + '/../www/doc'));
     }
 }
 

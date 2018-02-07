@@ -98,7 +98,7 @@ class Manager {
                 }
             });
         }
-        return products;
+        return products.map(entry => entry.product);
     }
 
     getGCVClient() {

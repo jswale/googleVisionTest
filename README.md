@@ -24,3 +24,11 @@ Before starting the web server, you have to create the `config.json` file as des
 Go to the project folder and launch
 
 `npm install && npm start`
+
+## API
+
+The documentation of the APIs is generated from the application code source using the [apiDOC](http://apidocjs.com) by running the command 
+
+`npm run-script build`
+
+The documentation is generated in the folder `www/doc` and available on [http://localhost:9090/doc/](http://localhost:9090/doc/) when the web server is online
