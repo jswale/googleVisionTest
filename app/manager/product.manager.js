@@ -1,7 +1,8 @@
 const fs = require('fs');
 const fcsv = require('fast-csv');
-const colourProximity = require('colour-proximity');
-const logger = require('../helpers/Logger');
+const gcVision = require('@google-cloud/vision');
+const config = require('../helpers/config');
+const logger = require('../helpers/logger');
 const Product = require('../domain/Product.domain');
 const storage = require('../storage/product.storage');
 
@@ -15,6 +16,10 @@ class Manager {
      */
     getById(id) {
         return storage.get(id);
+    }
+
+    save(product) {
+        storage.add(product.id, product);
     }
 
     /**
@@ -32,9 +37,7 @@ class Manager {
                     .transform((data) =>
                         new Product(data.id, data.title, data.gender_id, data.composition, data.sleeve, data.photo, data.url)
                     )
-                    .on("data", (product) =>
-                        storage.add(product.id, product)
-                    )
+                    .on("data", (product) => this.save(product))
                     .on("end", () => resolve(storage.getTotal())
                     );
             } catch (ex) {
@@ -43,6 +46,13 @@ class Manager {
         });
     }
 
+    /**
+     * Suggest a collection of products close to a product color
+     *
+     * @param product
+     * @param limit
+     * @return {Array}
+     */
     suggestByColor(product, limit) {
         let products = [];
 
@@ -87,6 +97,67 @@ class Manager {
             });
         }
         return products.map(entry => entry.p.id);
+    }
+
+    getGCVClient() {
+        if (!this._GCVClient) {
+            this._GCVClient = new gcVision.ImageAnnotatorClient({
+                keyFilename: config.get('credentials:googleCloud')
+            });
+        }
+        return this._GCVClient;
+    }
+
+    async importColors(limit) {
+        let noUpdated = 0;
+        await storage.list().some(product => {
+            // Stop updating products when limit is reached
+            if (noUpdated === limit) {
+                return true;
+            }
+            // Ignore product having a color
+            if (product.color) {
+                return false;
+            }
+            noUpdated++;
+            this.importColor(product);
+        });
+    }
+
+    updateColor(product, color) {
+        product.color = '#' + utils.rgbToHexa(color.red, color.green, color.blue);
+        this.save(product);
+    }
+
+    importColor(product) {
+        logger.debug(`Updating color for ${product} with image http:${product.photo}`);
+        return new Promise((resolve, reject) => {
+            try {
+                let client = this.getGCVClient();
+                client.imageProperties(`http:${product.photo}`)
+                    .then(results => {
+                        if (results.length === 0) {
+                            return reject("No result found from the api");
+                        }
+                        let result = results[0];
+                        let colors = result.imagePropertiesAnnotation.dominantColors.colors;
+                        // looks like the first color if the main one but in case let's sort the data to be sure
+                        colors.sort((a, b) => {
+                            return a.score - b.score;
+                        });
+                        let mainColor = colors[colors.length - 1];
+                        thi.updateColor(product, mainColor.color);
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error)
+                    });
+            } catch (ex) {
+                reject(ex);
+            }
+        });
+
     }
 
 }

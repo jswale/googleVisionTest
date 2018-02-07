@@ -1,5 +1,8 @@
 {
   "webserver": {
     "port": "9090"
+  },
+  "credentials": {
+    "googleCloud": ""
   }
 }

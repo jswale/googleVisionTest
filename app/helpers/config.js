@@ -5,7 +5,7 @@ class Config {
     constructor() {
         nconf.argv().env();
         nconf.file('default', './config.default.json');
-        nconf.defaults({})
+        nconf.file('env', './config.json');
     }
 
     get(key) {

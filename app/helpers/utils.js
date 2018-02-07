@@ -67,6 +67,11 @@ function responseJson(response, json) {
     response.send(JSON.stringify(json, null, 2));
 }
 
+// convert 0..255 R,G,B values to a hexidecimal color string
+function rgbToHexa(r, g, b) {
+    var bin = r << 16 | g << 8 | b;
+    return ((h) => new Array(7 - h.length).join("0") + h)(bin.toString(16).toUpperCase())
+}
 
 function generateColor() {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);

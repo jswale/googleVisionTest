@@ -18,10 +18,29 @@ function importProductFromCsv(request, response, next) {
     }
 
     productManager.loadFromCsv(path)
-        .then(total => utils.responseSuccess(response, {"success": total}))
+        .catch(reason => utils.responseSuccess(response, {"success": total}))
         .catch(reason => utils.responseError(response, 400, reason));
 }
 
+/**
+ * API to import the main colors of the products
+ * @param request
+ * @param response
+ * @param next
+ */
+function importProductColors(request, response, next) {
+    let limit = utils.toInt(request.query.limit) || 1;
+    if (limit < 0) {
+        return utils.responseError(response, 400, 'argument "limit" must be a positive number');
+    }
+
+    productManager.importColors(limit)
+        .catch(reason => utils.responseSuccess(response, {"success": true}))
+        .catch(reason => utils.responseError(response, 400, reason));
+
+}
+
 router.get('/product/import/csv', importProductFromCsv);
+router.get('/product/import/colors', importProductColors);
 
 module.exports = router;

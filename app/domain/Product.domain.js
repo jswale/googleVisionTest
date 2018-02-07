@@ -13,7 +13,7 @@ class Product {
         this.url = url;
         this.color = null;
         // TODO should by remove after debug
-        this.color = utils.generateColor();
+        //this.color = utils.generateColor();
     }
 
     toString() {
