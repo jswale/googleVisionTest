@@ -124,9 +124,11 @@ class Manager {
             noUpdated++;
             this.importColor(product);
         });
+        return noUpdated;
     }
 
     updateColor(product, color) {
+        logger.debug(` > color set to ${product.id}`);
         product.color = '#' + utils.rgbToHexa(color.red, color.green, color.blue);
         this.save(product);
     }

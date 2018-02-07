@@ -1,8 +1,8 @@
-var express = require('express');
-var utils = require('../helpers/utils');
-var productManager = require('../manager/product.manager');
+const express = require('express');
+const utils = require('../helpers/utils');
+const productManager = require('../manager/product.manager');
 
-var router = express.Router();
+let router = express.Router();
 
 /**
  * API to retreive a product detail
@@ -39,7 +39,7 @@ function importProductFromCsv(request, response, next) {
     }
 
     productManager.loadFromCsv(path)
-        .catch(reason => utils.responseSuccess(response, {"total": total}))
+        .then(total => utils.responseSuccess(response, {"total": total}))
         .catch(reason => utils.responseError(response, 400, reason));
 }
 
@@ -53,12 +53,12 @@ function importProductFromCsv(request, response, next) {
  * @apiExample {curl} Example usage:
  *     curl -i http://localhost:9090/product/import/colors
  *
- * @apiSuccess {Boolean} success true if import succeed
+ * @apiSuccess {Number} total the number of imported colors
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  * {
-     *    "success": true
+     *    "total": 5
      * }
  *
  * @apiError {String} error Reason
@@ -76,7 +76,7 @@ function importProductColors(request, response, next) {
     }
 
     productManager.importColors(limit)
-        .catch(reason => utils.responseSuccess(response, {"success": true}))
+        .then(total => utils.responseSuccess(response, {"total": total}))
         .catch(reason => utils.responseError(response, 400, reason));
 
 }

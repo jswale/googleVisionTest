@@ -48,6 +48,8 @@ class LocalStorage {
             logger.warn(`Fail parsing data from file ${file}`, {error: ex.message});
             return false;
         }
+
+        logger.info(`Data loaded from persistence file ${file}`);
     }
 
     clear() {
