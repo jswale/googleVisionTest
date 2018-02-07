@@ -1,5 +1,5 @@
 # googleVisionTest
-The goal of this project is to play with the [Google Vision API](https://cloud.google.com/vision) by managing a list of products. Some REST API are provided to inject, retreive and search products.
+The goal of this project is to play with the [Google Vision API](https://cloud.google.com/vision) by managing a list of products. Some REST API are provided to inject, retrieve and search products.
 
 ## Requirements
 
@@ -9,12 +9,12 @@ The goal of this project is to play with the [Google Vision API](https://cloud.g
 
 ## Configuration
 
-The application handle two configurations files. The `config.default.json` used for default values, and the `config.json` for the options related to your environment. All the options defined in the default file can be overrided.
+The application handles two configuration files. The `config.default.json` used for default values, and the `config.json` for the options related to your environment. All the options defined in the default file can be overridden.
 
 The options are:
 * **webserver:port** `number` port number of the web server (default to `9090`)
 * **credentials:googleCloud** `string` path to the file containing the credentials of your Google Cloud Account
-* **persistence:product:file** : `string` the path to the file to persist data (default `./data/products.data.json`). If no file is specified, the persistence is desactivated. 
+* **persistence:product:file** : `string` the path to the file to persist data (default `./data/products.data.json`). If no file is specified, the persistence is deactivated. 
 
 
 ## Run procedure
