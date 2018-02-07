@@ -2,7 +2,7 @@
   "webserver": {
     "port": "9090"
   },
-  "persistance" : {
+  "persistence" : {
     "product" : {
       "file" : "./data/products.data.json"
     }

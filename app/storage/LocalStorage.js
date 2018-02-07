@@ -5,28 +5,28 @@ const logger = require('../helpers/logger');
 
 class LocalStorage {
 
-    constructor(persistanceKey) {
+    constructor(persistenceKey) {
         this.clear();
-        this.persistanceKey = persistanceKey;
-        this.initFromPersistance();
+        this.persistenceKey = persistenceKey;
+        this.initFromPersistence();
     }
 
-    getPersistanceFile() {
-        return config.get(`persistance:${this.persistanceKey}:file`);
+    getPersistenceFile() {
+        return config.get(`persistence:${this.persistenceKey}:file`);
     }
 
-    initFromPersistance() {
-        if (!this.persistanceKey) {
+    initFromPersistence() {
+        if (!this.persistenceKey) {
             return;
         }
 
-        let file = this.getPersistanceFile();
+        let file = this.getPersistenceFile();
         if (!file) {
-            this._persistance = false;
-            logger.warn(`No persistance defined`);
+            this._persistence = false;
+            logger.warn(`No persistence defined`);
             return false;
         } else {
-            this._persistance = true;
+            this._persistence = true;
         }
 
         if (!fs.existsSync(file)) {
@@ -55,8 +55,8 @@ class LocalStorage {
     }
 
     dataChanged() {
-        if (!this._persistance) {
-            // No persistance, nothing to do
+        if (!this._persistence) {
+            // No persistence, nothing to do
             return;
         }
 
@@ -64,17 +64,17 @@ class LocalStorage {
     }
 
     waitAndSave() {
-        if (!this._persistanceTask) {
-            this._persistanceTask = setTimeout(() => {
+        if (!this._persistenceTask) {
+            this._persistenceTask = setTimeout(() => {
                 // Remove the task
-                this._persistanceTask = null;
+                this._persistenceTask = null;
                 // wait to the current task to end
-                if (this._persistanceInProgress) {
+                if (this._persistenceInProgress) {
                     this.waitAndSave();
                 } else {
-                    this._persistanceInProgress = true;
+                    this._persistenceInProgress = true;
                     this.persist().then(() => {
-                        this._persistanceInProgress = false
+                        this._persistenceInProgress = false
                     }).catch(reason => {
                         console.log(reason)
                     })
@@ -85,7 +85,7 @@ class LocalStorage {
 
     persist() {
         return new Promise((resolve, reject) => {
-            let file = this.getPersistanceFile();
+            let file = this.getPersistenceFile();
             utils.ensureDirectoryExistence(file);
             fs.writeFile(file, JSON.stringify(this.datas), (err) => {
                 err ? reject(err) : resolve();
