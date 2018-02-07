@@ -18,7 +18,7 @@ function importProductFromCsv(request, response, next) {
     }
 
     productManager.loadFromCsv(path)
-        .then(total => utils.responseSuccess(response, {"success": true}))
+        .then(total => utils.responseSuccess(response, {"success": total}))
         .catch(reason => utils.responseError(response, 400, reason));
 }
 

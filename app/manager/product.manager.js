@@ -1,6 +1,7 @@
 const fs = require('fs');
 const fcsv = require('fast-csv');
 const Product = require('../domain/Product.domain');
+const storage = require('../storage/product.storage');
 
 class Manager {
 
@@ -15,9 +16,9 @@ class Manager {
                         new Product(data.id, data.title, data.gender_id, data.composition, data.sleeve, data.photo, data.url)
                     )
                     .on("data", (product) =>
-                        console.log('Saving', product)
+                        storage.add(product.id, product)
                     )
-                    .on("end", () => resolve()
+                    .on("end", () => resolve(storage.getTotal())
                     );
             } catch (ex) {
                 reject(ex);
