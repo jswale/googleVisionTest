@@ -1,5 +1,7 @@
 const fs = require('fs');
 const fcsv = require('fast-csv');
+const colourProximity = require('colour-proximity');
+const logger = require('../helpers/Logger');
 const Product = require('../domain/Product.domain');
 const storage = require('../storage/product.storage');
 
@@ -42,7 +44,49 @@ class Manager {
     }
 
     suggestByColor(product, limit) {
-        return [];
+        let products = [];
+
+        // The product have a recorded color
+        if (product.color) {
+            let best = undefined;
+            storage.list().some(other => {
+                // Ignore if same product
+                if (other.id === product.id) {
+                    return false;
+                }
+                // Ignore if the other product dont have a color
+                if (!other.color) {
+                    return false;
+                }
+
+                // A lower number means a better score
+                let score;
+                try {
+                    score = colourProximity.proximity(product.color, other.color);
+                } catch (ex) {
+                    logger.warn(`Unable to perform proximity beetwen ${product} and ${other}`);
+                    return false;
+                }
+
+                let addEntry = false;
+                if (products.length < limit) {
+                    addEntry = true;
+                } else if (score < best) {
+                    addEntry = true;
+                    // We need to do remove the last entry (the baddest one)
+                    products.pop();
+                }
+
+                if (addEntry) {
+                    products.push({p: other, s: score});
+                    // We need to sort the products by their scores
+                    products.sort((a, b) => a.s - b.s);
+                    // Retreive the new best score
+                    best = products[products.length - 1];
+                }
+            });
+        }
+        return products.map(entry => entry.p.id);
     }
 
 }
