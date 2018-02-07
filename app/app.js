@@ -55,6 +55,7 @@ class Server {
      */
     routes() {
         this.app.use('/', require('./routes/index.route'));
+        this.app.use('/admin', require('./routes/admin.route'));
     }
 }
 

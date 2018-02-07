@@ -45,7 +45,7 @@ function toInt(value) {
  */
 function responseError(response, status, reason) {
     response.status(status);
-    onJson(response, {reason: reason});
+    responseJson(response, {reason: reason});
 }
 
 /**
@@ -54,7 +54,7 @@ function responseError(response, status, reason) {
  * @param data
  */
 function responseSuccess(response, data) {
-    onJson(response, {data: data});
+    responseJson(response, {data: data});
 }
 
 /**
