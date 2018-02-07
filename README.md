@@ -1,5 +1,5 @@
 # googleVisionTest
-The goal of this project is to play with the [Google Vision API](https://cloud.google.com/vision) by managing a list or products and searching for the nearest other products by color. REST API are provided to interact with the application.
+The goal of this project is to play with the [Google Vision API](https://cloud.google.com/vision) by managing a list of products. Some REST API are provided to inject, retreive and search products.
 
 ## Requirements
 
@@ -9,17 +9,17 @@ The goal of this project is to play with the [Google Vision API](https://cloud.g
 
 ## Configuration
 
-The application can deal with two configurations files. The `config.default.json` used for default values, and the `config.json` where the specific options related to your environment have to be set. All the options defined in the default file can be overrided by the other.
+The application handle two configurations files. The `config.default.json` used for default values, and the `config.json` for the options related to your environment. All the options defined in the default file can be overrided.
 
-Here are the options :
+The options are:
 * **webserver:port** `number` port number of the web server (default to `9090`)
 * **credentials:googleCloud** `string` path to the file containing the credentials of your Google Cloud Account
-* **persistence:product:file** : `string` the path of the file to persist data (default `./data/products.data.json`). If no file is specified, the persistence is desactivated. 
+* **persistence:product:file** : `string` the path to the file to persist data (default `./data/products.data.json`). If no file is specified, the persistence is desactivated. 
 
 
 ## Run procedure
 
-Before starting the web server, you have to create the `config.json` file as describe previously.
+Before starting the web server, you have to create the `config.json` file as described previously.
 
 Go to the project folder and launch
 
@@ -27,8 +27,8 @@ Go to the project folder and launch
 
 ## API
 
-The documentation of the APIs is generated from the application code source using the [apiDOC](http://apidocjs.com) by running the command 
+The documentation of the APIs is generated from the source code using the [apiDOC](http://apidocjs.com) by running the command 
 
 `npm run-script build`
 
-The documentation is generated in the folder `www/doc` and available on [http://localhost:9090/doc/](http://localhost:9090/doc/) when the web server is online
+The documentation is generated in the folder `www/doc` and is available on [http://localhost:9090/doc/](http://localhost:9090/doc/) when the web server is online
