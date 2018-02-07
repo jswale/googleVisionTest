@@ -5,6 +5,21 @@ const storage = require('../storage/product.storage');
 
 class Manager {
 
+    /**
+     * Retreive a product by his id
+     *
+     * @param id
+     * @return {Product}
+     */
+    getById(id) {
+        return storage.get(id);
+    }
+
+    /**
+     * Load data from a CSV
+     * @param path the path to the local file
+     * @return {Promise<number>} the number of items in the storage
+     */
     loadFromCsv(path) {
         return new Promise((resolve, reject) => {
             try {

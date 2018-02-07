@@ -14,7 +14,7 @@ var router = express.Router();
 function importProductFromCsv(request, response, next) {
     let path = request.query.path;
     if (!path) {
-        return utils.responseError(response, 400, 'mandatory quary argument named "Path"');
+        return utils.responseError(response, 400, 'mandatory query argument named "Path"');
     }
 
     productManager.loadFromCsv(path)
